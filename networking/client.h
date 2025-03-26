@@ -31,6 +31,7 @@
 class TcpClient{
 
 public:
+    // MessageHandler is a placeholder for now until I can create the message protocol
     using MessageHandler = std::function<void(const std::string& message)>;
 
     TcpClient(const std::string& serverIp, int serverPort, MessageHandler handler);
@@ -49,8 +50,7 @@ private:
     std::thread m_receiveThread;
     MessageHandler m_messageHandler;
 
-    void ReceieveMessages();
-
+    void receieveMessages();
 };
 
-#endif /* STRIFE_NETWORKING_SERVER_H*/
+#endif /* STRIFE_NETWORKING_CLIENT_H*/
