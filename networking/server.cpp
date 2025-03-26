@@ -115,7 +115,7 @@ bool TcpServer::sendToClient(int clientId, const std::string& message) {
     return true;
 }
 
-void TcpServer::broadcastMessage(const std::string& message, int excludeClientId = -1) {
+void TcpServer::broadcastMessage(const std::string& message, int excludeClientId) {
     std::lock_guard<std::mutex> lock(m_clientsMutex);
     for (const auto& client : m_clients) {
         if (client.id != excludeClientId) {
@@ -147,7 +147,9 @@ void TcpServer::acceptClients() {
         Client newClient;
         newClient.id = clientId;
         newClient.socket = clientSocket;
-        newClient.thread = std::thread(&TcpServer::handleClient, this, newClient);
+
+        // std::ref is pretty neat here, the std::thread constructor makes copies of all arguements to store but our client object does not support copying since we have non-copyable members (mutex)
+        newClient.thread = std::thread(&TcpServer::handleClient, this, std::ref(newClient));
         newClient.running = true;
 
         // add client to list
@@ -158,7 +160,7 @@ void TcpServer::acceptClients() {
     }
 }
 
-void TcpServer::handleClient(Client client) {
+void TcpServer::handleClient(Client& client) {
     const int BUFFER_SIZE = 4096;
     char buffer[BUFFER_SIZE];
     int clientId = client.id;
@@ -188,7 +190,8 @@ void TcpServer::handleClient(Client client) {
         //convert to string and handle
         std::string message(buffer, bytesRead);
         if (m_messageHandler) {
-            m_messageHandler(clientId, &message);
+            continue;
+            //m_messageHandler(clientId, &message); // this doesn't really do anything right now
         }
     }
 

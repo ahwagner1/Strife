@@ -41,7 +41,7 @@ public:
     bool start();
     void stop();
     bool sendToClient(int clientId, const std::string& message);
-    void broadcastMessage(const std::string& message, int excludeClientId = -1);
+    void broadcastMessage(const std::string& message, int excludeClientId);
 
 private:
 
@@ -62,7 +62,7 @@ private:
     MessageHandler m_messageHandler;
 
     void acceptClients();
-    void handleClient(Client client);
+    void handleClient(Client& client);
 };
 
 #endif /* STRIFE_NETWORKING_SERVER_H*/
