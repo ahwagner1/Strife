@@ -34,7 +34,7 @@ class TcpServer {
 
 public:
     // MessageHandler is a placeholder for now until I can create the message protocol
-    using MessageHandler = std::function<void(int clientId, const std::string* message)>;
+    using MessageHandler = std::function<void(int clientId, const std::string& message)>;
 
     TcpServer(int port, MessageHandler handler);
     ~TcpServer();
