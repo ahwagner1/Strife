@@ -1,4 +1,4 @@
-#include "server.h"
+#include "server.hpp"
 
 TcpServer::TcpServer(int port, MessageHandler handler) : 
     m_port(port),
@@ -148,7 +148,7 @@ void TcpServer::acceptClients() {
         newClient.id = clientId;
         newClient.socket = clientSocket;
 
-        // std::ref is pretty neat here, the std::thread constructor makes copies of all arguements to store but our client object does not support copying since we have non-copyable members (mutex)
+        // std::ref is pretty neat here, the std::thread constructor makes copies of all arguements to store but our client struct has non copyable member (thread)
         newClient.thread = std::thread(&TcpServer::handleClient, this, std::ref(newClient));
         newClient.running = true;
 

@@ -6,7 +6,7 @@ int main() {
         std::cout << "Message from client " << clientId << ": " << message << std::endl;
 
         // echo message back to all clients
-        server.broadcastMessage("Client " + std::to_string(clientId) + ": " + message);
+        server.broadcastMessage("Client " + std::to_string(clientId) + ": " + message, clientId);
     });
 
     if (!server.start()) {

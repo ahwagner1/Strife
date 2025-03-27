@@ -1,4 +1,4 @@
-#include "client.h"
+#include "client.hpp"
 
 TcpClient::TcpClient(const std::string& serverIp, int serverPort, MessageHandler handler) : 
     m_serverIp(serverIp),
