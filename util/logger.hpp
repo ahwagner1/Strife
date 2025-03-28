@@ -25,4 +25,4 @@ private:
     std::string logLevelToString(LogLevel level);
 };
 
-#endif
+#endif /* STRIFE_UTIL_LOGGER_H */

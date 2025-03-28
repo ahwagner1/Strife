@@ -7,6 +7,9 @@ Logger::Logger(const std::string& filename) : m_logFile(filename, std::ios::app)
 }
 
 Logger::~Logger() {
+    std::lock_guard<std::mutex> guard(m_logMutex);
+    m_logFile << "========================================" << std::endl;
+    
     if (m_logFile.is_open()) {
         m_logFile.close();
     }
