@@ -15,9 +15,17 @@ Logger::~Logger() {
     }
 }
 
-void Logger::log(LogLevel level, const std::string& message) {
+Logger& Logger::getInstance(const std::string& filename) {
+    static Logger instance(filename);
+    return instance;
+}
+
+void Logger::log(LogLevel level, const std::string& message, const std::string& funcName) {
     std::lock_guard<std::mutex> guard(m_logMutex);
-    m_logFile << "[" << currentDateTime() << "]" << "[" << logLevelToString(level) << "] " << message << std::endl; 
+    m_logFile << "[" << currentDateTime() << "]" 
+        << "[" << logLevelToString(level) << "]"
+        <<"[" << funcName << "] " 
+        << message << std::endl; 
 }
 
 std::string Logger::currentDateTime() {
@@ -32,13 +40,10 @@ std::string Logger::logLevelToString(LogLevel level) {
     switch(level) {
         case LogLevel::INFO:
             return "INFO";
-            break;
         case LogLevel::WARNING:
             return "WARNING";
-            break;
         case LogLevel::ERROR:
             return "ERROR";
-            break;
         default:
             return "UNKNOWN";
     }
