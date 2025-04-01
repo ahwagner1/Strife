@@ -22,8 +22,8 @@ void BaseRepository<Entity>::executeQuery(const std::string& query, Args&&... ar
         txn.commit();
     }
     catch (const std::exception& e) {
-        Logger::getInstance().log(Logger::ERROR, "Failed to execute query" _ std::string(e.what()), __PRETTY_FUNCTION__);
-        return;
+        Logger::getInstance().log(Logger::ERROR, "Failed to execute query" + std::string(e.what()), __PRETTY_FUNCTION__);
+        throw;
     }
 }
 
@@ -42,7 +42,7 @@ pqxx::result BaseRepository<Entity>::executeQueryWithResult(const std::string& q
         return r;
     }
     catch (const std::exception& e) {
-        Logger::getInstance().log(Logger::ERROR, "Failed to execute query" _ std::string(e.what()), __PRETTY_FUNCTION__);
-        return;
+        Logger::getInstance().log(Logger::ERROR, "Failed to execute query" + std::string(e.what()), __PRETTY_FUNCTION__);
+        throw;
     }
 }
